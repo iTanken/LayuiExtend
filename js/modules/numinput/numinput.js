@@ -9,7 +9,7 @@
 layui.define(['jquery'], function(exports) {
   var $ = layui.$, baseClassName = 'layui-input-number', keyClassName = 'layui-keyboard-number',
     style = ['<style type="text/css">',
-      '.', baseClassName, ' + .', keyClassName, ' { position: absolute; background-color: #f2f2f2; display: block; ', 
+      '.', baseClassName, ' + .', keyClassName, ' { position: absolute; z-index: 20190402; background-color: #f2f2f2; display: block; ', 
       ' outline: none; border-radius: 2px; border-style: solid; border-color: #e6e6e6; border-width: 0 1px 1px 1px; }', 
       '.', keyClassName, ' .layui-card-body { font-family: Consolas; font-size: 17px; font-weight: 600; ',
       ' text-align: center; background-color: #ffffff; cursor: pointer; }',

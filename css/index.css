@@ -8,7 +8,7 @@ h1,h2,h3{font-size: 14px; }
 .site-tree, .site-content{display: inline-block;  *display:inline; *zoom:1; vertical-align: top; font-size: 14px;}
 .site-tree{width: 220px; min-height: 900px; padding: 5px 0 20px;}
 .site-content{width: 899px; min-height: 900px; padding: 20px 0 10px 20px;}
-
+.layui-card-body { overflow: auto; } 
 /* 头部 */
 .header{height: 59px; border-bottom: 1px solid #404553;  background-color: #393D49;}
 .logo{position: absolute; left: 0; top: 16px;}
