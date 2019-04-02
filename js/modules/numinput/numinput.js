@@ -27,7 +27,7 @@ layui.define(['jquery'], function(exports) {
       // 监听键盘事件
       listening: true,
       // 批量配置默认小数精确度
-      defaultPrec: ''
+      defaultPrec: 0
     },
     /** 初始化 */
     init: function(custom) {
@@ -172,12 +172,7 @@ layui.define(['jquery'], function(exports) {
         });
         $keyBoard.on('blur', function(e) {
           var inputVal = $input.val();
-          /*
-          if (inputVal.indexOf('.') === inputVal.length - 1) {
-            _this.setValueRange(_this, $input, inputVal + '0');
-          }
-          */
-         $input.val(_this.toFixedPrec(_this, $input, inputVal));
+          $input.val(_this.toFixedPrec(_this, $input, inputVal));
           // $keyBoard.hide();
           $keyBoard.remove();
         });
@@ -210,22 +205,23 @@ layui.define(['jquery'], function(exports) {
     },
     /** 处理精确度 */
     toFixedPrec: function(_this, $input, val1, val2) {
-      var m, s, rs, prec = $input.data('prec') || _this.options.defaultPrec;
-      try {
-        prec = isNaN(prec) ? val1.toString().split('.')[1].length : prec;
-      } catch(e) {
-        console.warn(e);
+      var m, s, rs, prec = $.trim($input.data('prec'));
+      prec = prec === '' ? _this.options.defaultPrec : prec;
+      
+      val1 = val1 == '' ? 0 : val1;
+      rs = val1.toString().split('.')[1];
+      if (prec < 1) {
+        prec = rs && rs.length || prec;
       }
-      try {
-        val2 = val2 || 0;
-        prec = Math.max(prec, val2.toString().indexOf('.') > -1 ? val2.toString().split('.')[1].length : 0);
-      } catch(e) {
-        console.warn(e);
-      }
+      
+      val2 = val2 || 0;
+      rs = val2.toString().split('.')[1];
+      prec = Math.max(prec, rs ? rs.length : 0);
+      
       m = Math.pow(10, prec);
-      s = ((val1 * m + val2 * m) / m).toString();
+      s = ((val1 * m + val2 * m).toFixed(0) / m).toString();
       rs = s.indexOf('.');
-      if (rs < 0) {
+      if (rs < 0 && prec > 0) {
         rs = s.length;
         s += '.';
       }
@@ -260,11 +256,11 @@ layui.define(['jquery'], function(exports) {
       var inputVal = $.trim($input.val()), keyVal = $.trim($key.text()), 
         prec = $input.data('prec') || _this.options.defaultPrec,
         isDecimal = inputVal.indexOf('.') > -1;
-        
+
       if ($.inArray(keyVal, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']) > -1) {
         if (keyVal === '.' && (inputVal === '' || isDecimal)) return;
         if (keyVal === '0' && inputVal.indexOf('0') === 0 && !isDecimal) return;
-        if (inputVal.indexOf('.') > -1 && inputVal.split('.')[1].length >= prec) {
+        if (inputVal.indexOf('.') > -1 && inputVal.split('.')[1].length >= prec && prec > 0) {
           _this.tips($input, '精确度为保留小数点后 ' + prec + ' 位！');
           return;
         };
