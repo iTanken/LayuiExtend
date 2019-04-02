@@ -10,8 +10,8 @@
 > ``` javascript
 > layui.config({
 >   base: 'js/modules/'
-> 	numinput: 'numinput/numinput'
 > }).extend({
+> 	numinput: 'numinput/numinput'
 > }).use(['form', 'numinput'], function() {
 > 	var form = layui.form, numinp = layui.numinput,;
 > 	numinp.init({
