@@ -307,7 +307,7 @@ layui.define(['jquery'], function(exports) {
     },
     /** 提示 */
     tips: function($input, msg) {
-      return layer.tips(msg, $input, { tips: 1, time: 2e3, anim: 6 });
+      return layer.tips(msg, $input, { tips: 1, time: 2e3, anim: 6, zIndex: 20190403 });
     }
   };
 
