@@ -16,7 +16,7 @@
 </head>
 <body class="site-home" id="LAY_home" style="background-color: #eee;" data-date="3-29">
 <div class="layui-header header header-index" spring>
-  <div class="layui-main">
+  <div class="">
     <a class="logo" href="#">
       <img src="img/logo.png" alt="layui">
     </a>
@@ -61,128 +61,50 @@
     </div>
   </div>
 </div>
-<div class="layui-main" id="doc">
-  <ul class="site-idea">
-    <li>
-      <fieldset class="layui-elem-field layui-field-title">
-        <legend>数字输入 number input</legend>
-        <h3>示例：</h3>
-        <div class="layui-form">
-					<div class="layui-form-item">
-            <input class="layui-input layui-input-number" min="0" max="1000" step="1" data-prec="4" id="numberInput">
+<div class="layui-fluid" id="doc">
+  <div class="layui-row layui-col-space10">
+    <div class="layui-col-xs12 layui-col-sm6 layui-col-lg4">
+      <div class="layui-card">
+        <div class="layui-card-header">数字输入 number input</div>
+        <div class="layui-card-body">
+          <h3>示例：</h3>
+          <div class="layui-form">
+            <div class="layui-form-item">
+              <input class="layui-input layui-input-number" min="0" max="1000" step="1" data-prec="4" id="numberInput">
+            </div>
+            <blockquote class="layui-elem-quote layui-quote-nm">
+              <p>支持数字键盘输入，退格键删除，上下左右键增加减小，+/- 键切换正负数。</p>
+            </blockquote>
           </div>
-					<blockquote class="layui-elem-quote layui-quote-nm">
-            <p>支持数字键盘输入，退格键删除，上下左右键增加减小，+/- 键切换正负数。</p>
-          </blockquote>
-          <!--
-					<div class="layui-keyboard-number layui-unselect layui-anim layui-anim-fadein">
-						<div class="layui-row layui-col-space1">
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="49|97">1</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="50|98">2</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="51|99">3</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="8" lay-tips="退格">
-										<i class="layui-icon layui-icon-return"></i>
-									</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="52|100">4</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="53|101">5</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="54|102">6</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="38|39" lay-tips="增大">
-										<i class="layui-icon layui-icon-up"></i>
-									</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="55|103">7</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="56|104">8</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="57|105">9</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="37|40" lay-tips="减小">
-										<i class="layui-icon layui-icon-down"></i>
-									</div>
-								</div>
-							</div>
-							<div class="layui-col-xs6">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="48|96">0</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" data-keycode="110|190">.</div>
-								</div>
-							</div>
-							<div class="layui-col-xs3">
-								<div class="layui-card">
-									<div class="layui-card-body" lay-tips="重置">
-										<i class="layui-icon layui-icon-refresh-1"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					 -->
-				</div>
-      </fieldset>
-    </li>
-    <li>
-      <fieldset class="layui-elem-field layui-field-title">
-        <legend>2</legend>
-        <p>...</p>
-      </fieldset>
-    </li>
-    <li>
-      <fieldset class="layui-elem-field layui-field-title">
-        <legend>3</legend>
-        <p>...</p>
-      </fieldset>
-    </li>
-  </ul>
-  
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-xs12 layui-col-sm6 layui-col-lg4">
+      <div class="layui-card">
+        <div class="layui-card-header">2</div>
+        <div class="layui-card-body">
+          <h3>示例：</h3>
+          <div class="layui-form">
+            ...
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-xs12 layui-col-sm6 layui-col-lg4">
+      <div class="layui-card">
+        <div class="layui-card-header">3</div>
+        <div class="layui-card-body">
+          <h3>示例：</h3>
+          <div class="layui-form">
+            ...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="layui-footer footer footer-index">
-  <div class="layui-main">
+  <div class="">
     <p>MIT license</p>
     <p>
       <a href="https://zixizixi.cn/" target="_blank">子兮子兮</a>
@@ -198,7 +120,7 @@
 layui.config({
   base: 'js/modules/', version: '1551352891272'
 }).extend({
-	numinput: 'numinput/numinput'
+	numinput: 'numinput/numinput.min'
 }).use(['form', 'numinput', 'code', 'util'], function() {
 	var form = layui.form, numinp = layui.numinput, util = layui.util;
 	numinp.init({rightBtns: true});

@@ -5,18 +5,16 @@
  * @since 20190329
  * 
  * TODO 数字键盘定位自适应
- * TODO 
  */
 layui.define(['jquery'], function(exports) {
   var $ = layui.$, baseClassName = 'layui-input-number', keyClassName = 'layui-keyboard-number',
-    style = [
-      '<style type="text/css">',
-      '.', baseClassName, ' + .', keyClassName, ' { position: absolute; display: block; border-radius: 2px; outline: none; background-color: #f2f2f2; }',
-      '.', keyClassName, ' .layui-card-body { font-family: Consolas; font-size: 17px; font-weight: 600; text-align: center; background-color: #ffffff; cursor: pointer; }',
+    style = ['<style type="text/css">',
+      '.', baseClassName, ' + .', keyClassName, ' { position: absolute; background-color: #f2f2f2; display: block; ', 
+      ' outline: none; border-radius: 2px; border-style: solid; border-color: #e6e6e6; border-width: 0 1px 1px 1px; }', 
+      '.', keyClassName, ' .layui-card-body { font-family: Consolas; font-size: 17px; font-weight: 600; ',
+      ' text-align: center; background-color: #ffffff; cursor: pointer; }',
       '.', keyClassName, ' .layui-card-body:active { background-color: #f2f2f2; }',
-      '',
-      '</style>'
-    ].join('');
+      '</style>'].join('');
   $('head link:last')[0] && $('head link:last').after(style) || $('head').append(style);
 
   var numberInput = {
@@ -129,7 +127,7 @@ layui.define(['jquery'], function(exports) {
           ].join('');
         
         $input.after(['<div tabindex="0" hidefocus="true" class="', keyClassName, ' layui-unselect" ', 
-          'style="width:', $input.width() + 11, 'px;">',
+          'style="width:', $input.width() + 10, 'px;">',
           '<div class="layui-row layui-col-space1">',
             _this.options.topBtns == 789 ? btn789 : btn123,
             _this.options.rightBtns ? backspace : '',
