@@ -27,7 +27,7 @@ layui.define(['jquery'], function(exports) {
       // 监听键盘事件
       listening: true,
       // 批量配置默认小数精确度
-      defaultPrec: '',
+      defaultPrec: ''
     },
     /** 初始化 */
     init: function(custom) {

@@ -26,7 +26,9 @@
 >     // 右侧功能按钮
 >     rightBtns: true,
 >     // 监听键盘事件
->     listening: true
+>     listening: true,
+>     // 批量配置默认小数精确度
+>     defaultPrec: ''
 >   });
 > });
 > ```
