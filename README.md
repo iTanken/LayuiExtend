@@ -6,6 +6,13 @@
 
 #### 用法：
 [在线示例](https://itanken.github.io/LayuiExtend/)
+> 支持 min/max，及附加的 prec 控制小数精确度：
+> ``` html
+> <div class="layui-form">
+>   <input class="layui-input layui-input-number" min="0" max="100" data-prec="4">
+> </div>
+> ```
+
 > ``` javascript
 > layui.config({
 >   base: 'js/modules/'

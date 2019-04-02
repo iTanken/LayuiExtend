@@ -27,27 +27,30 @@ layui.define(['jquery'], function(exports) {
       // 右侧功能按钮
       rightBtns: true,
       // 监听键盘事件
-      listening: true
+      listening: true,
+      // 批量配置默认小数精确度
+      defaultPrec: '',
     },
     /** 初始化 */
     init: function(custom) {
-      var _this = this, options = $.extend(_this.options, custom);
+      var _this = this;
+      _this.options = $.extend(_this.options, custom);
       $('.' + baseClassName).attr({
         "readonly": "readonly"
       }).on('focus', function(e) {
-        _this.showKeyboard(_this, $(this), options);
+        _this.showKeyboard(_this, $(this));
       });
     },
     /** 显示数字键盘 */
-    showKeyboard: function(_this, $input, options) {
+    showKeyboard: function(_this, $input) {
       var $keyBoard = $input.next('.' + keyClassName);
       if ($keyBoard[0]) {
         // 已存在，直接显示
         $keyBoard.show();
       } else {
         // 不存在，添加元素
-        var sizeXS = options.rightBtns ? 'xs3' : 'xs4',
-          sizeZero = options.rightBtns ? 'xs6' : 'xs4',
+        var sizeXS = _this.options.rightBtns ? 'xs3' : 'xs4',
+          sizeZero = _this.options.rightBtns ? 'xs6' : 'xs4',
           // 按钮 123
           btn123 = [
             '<div class="layui-col-', sizeXS, '">',
@@ -128,8 +131,8 @@ layui.define(['jquery'], function(exports) {
         $input.after(['<div tabindex="0" hidefocus="true" class="', keyClassName, ' layui-unselect" ', 
           'style="width:', $input.width() + 11, 'px;">',
           '<div class="layui-row layui-col-space1">',
-            options.topBtns == 789 ? btn789 : btn123,
-            options.rightBtns ? backspace : '',
+            _this.options.topBtns == 789 ? btn789 : btn123,
+            _this.options.rightBtns ? backspace : '',
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
                 '<div class="layui-card-body" data-keycode="52 100">4</div>',
@@ -145,10 +148,10 @@ layui.define(['jquery'], function(exports) {
                 '<div class="layui-card-body" data-keycode="54 102">6</div>',
               '</div>',
             '</div>',
-            options.rightBtns ? add : '',
-            options.topBtns == 789 ? btn123 : btn789,
-            options.rightBtns ? reduce : '',
-            options.rightBtns ? '' : backspace,
+            _this.options.rightBtns ? add : '',
+            _this.options.topBtns == 789 ? btn123 : btn789,
+            _this.options.rightBtns ? reduce : '',
+            _this.options.rightBtns ? '' : backspace,
             '<div class="layui-col-', sizeZero, '">',
               '<div class="layui-card">',
                 '<div class="layui-card-body" data-keycode="48 96">0</div>',
@@ -159,7 +162,7 @@ layui.define(['jquery'], function(exports) {
                 '<div class="layui-card-body" data-keycode="110 190">.</div>',
               '</div>',
             '</div>',
-            options.rightBtns ? reset : '',
+            _this.options.rightBtns ? reset : '',
           '</div>',
         '</div>'].join(''));
         
@@ -167,16 +170,20 @@ layui.define(['jquery'], function(exports) {
         $keyBoard.on('touchstart click', '.layui-card-body', function(e) {
           _this.setValue(_this, $input, $(this));
           layui.stope(e);
+          return false;
         });
         $keyBoard.on('blur', function(e) {
           var inputVal = $input.val();
+          /*
           if (inputVal.indexOf('.') === inputVal.length - 1) {
-            $input.val(inputVal + '0');
+            _this.setValueRange(_this, $input, inputVal + '0');
           }
+          */
+         $input.val(_this.toFixedPrec(_this, $input, inputVal));
           // $keyBoard.hide();
           $keyBoard.remove();
         });
-        options.listening && _this.initKeyListening(_this, $input, $keyBoard);
+        _this.options.listening && _this.initKeyListening(_this, $input, $keyBoard);
       }
       $keyBoard.focus();
     },
@@ -203,16 +210,41 @@ layui.define(['jquery'], function(exports) {
         return false;
       });
     },
+    /** 处理精确度 */
+    toFixedPrec: function(_this, $input, val1, val2) {
+      var m, s, rs, prec = $input.data('prec') || _this.options.defaultPrec;
+      try {
+        prec = isNaN(prec) ? val1.toString().split('.')[1].length : prec;
+      } catch(e) {
+        console.warn(e);
+      }
+      try {
+        val2 = val2 || 0;
+        prec = Math.max(prec, val2.toString().indexOf('.') > -1 ? val2.toString().split('.')[1].length : 0);
+      } catch(e) {
+        console.warn(e);
+      }
+      m = Math.pow(10, prec);
+      s = ((val1 * m + val2 * m) / m).toString();
+      rs = s.indexOf('.');
+      if (rs < 0) {
+        rs = s.length;
+        s += '.';
+      }
+      while (s.length <= rs + prec) {
+        s += '0';
+      }
+      return s;
+    },
     /** 设置值范围 */
     setValueRange: function(_this, $input, value) {
-      var prec = $input.data('prec'),
-        minVal = $input.attr('min') || Math.pow(-2, 63), 
+      var minVal = $input.attr('min') || Math.pow(-2, 63), 
         maxVal = $input.attr('max') || Math.pow(2, 63) - 1;
-      console.log(minVal, maxVal, prec)
-      if (!isNaN(prec)) {
-        prec = Math.pow(10, prec);
-        value = Math.round(value * prec) / prec;
-      }
+        
+      minVal = typeof minVal === 'string' && minVal.indexOf('0') > -1 ? parseFloat(minVal) : parseInt(minVal);
+      maxVal = typeof maxVal === 'string' && maxVal.indexOf('0') > -1 ? parseFloat(maxVal) : parseInt(maxVal);
+      // value = typeof value === 'string' && value.indexOf('0') > -1 ? parseFloat(value) : parseInt(value);
+      
       if (value < minVal) {
         value = minVal;
         _this.tips($input, '最小值为 ' + minVal + '！');
@@ -228,17 +260,22 @@ layui.define(['jquery'], function(exports) {
     /** 设置输入框值 */
     setValue: function(_this, $input, $key) {
       var inputVal = $.trim($input.val()), keyVal = $.trim($key.text()), 
+        prec = $input.data('prec') || _this.options.defaultPrec,
         isDecimal = inputVal.indexOf('.') > -1;
-
+        
       if ($.inArray(keyVal, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']) > -1) {
         if (keyVal === '.' && (inputVal === '' || isDecimal)) return;
         if (keyVal === '0' && inputVal.indexOf('0') === 0 && !isDecimal) return;
+        if (inputVal.indexOf('.') > -1 && inputVal.split('.')[1].length >= prec) {
+          _this.tips($input, '精确度为保留小数点后 ' + prec + ' 位！');
+          return;
+        };
         
         inputVal = (keyVal !== '.' && inputVal === '0' ? '' : inputVal) + keyVal;
         _this.setValueRange(_this, $input, inputVal);
       } else {
-        var step = $input.attr('step'),
-          changeVal = inputVal === '' ? 0 : inputVal;
+        var changeVal = inputVal === '' ? 0 : inputVal,
+          step = $input.attr('step');
         if (isDecimal) {
           step = parseFloat(step) || 0.1;
           changeVal = parseFloat(changeVal);
@@ -250,11 +287,11 @@ layui.define(['jquery'], function(exports) {
         switch($key.data('keycode')) {
         case '38 39':
           // 增加键
-          changeVal = changeVal + step;
+          changeVal = _this.toFixedPrec(_this, $input, changeVal, step);
           break;
         case '37 40':
           // 减小键
-          changeVal = changeVal - step;
+          changeVal = _this.toFixedPrec(_this, $input, changeVal, -step);
           break;
         case 8:
           // 退格键
