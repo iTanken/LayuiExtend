@@ -4,17 +4,16 @@
 ## 组件列表
 * [数字输入框](https://github.com/iTanken/LayuiExtend/tree/master/js/modules/numinput)
 
-
 #### 用法：
 [在线示例](https://itanken.github.io/LayuiExtend/)
 > ``` javascript
 > layui.config({
 >   base: 'js/modules/'
 > }).extend({
-> 	numinput: 'numinput/numinput'
+>   numinput: 'numinput/numinput'
 > }).use(['form', 'numinput'], function() {
-> 	var form = layui.form, numinp = layui.numinput,;
-> 	numinp.init({
+>   var form = layui.form, numinp = layui.numinput,;
+>   numinp.init({
 >     // 123：123键置顶, 789：789键置顶
 >     topBtns: 123,
 >     // 右侧功能按钮
