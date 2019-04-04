@@ -8,7 +8,8 @@ h1,h2,h3{font-size: 14px; }
 .site-tree, .site-content{display: inline-block;  *display:inline; *zoom:1; vertical-align: top; font-size: 14px;}
 .site-tree{width: 220px; min-height: 900px; padding: 5px 0 20px;}
 .site-content{width: 899px; min-height: 900px; padding: 20px 0 10px 20px;}
-.layui-card-body { overflow: auto; } 
+#doc .layui-card-body { overflow: auto; min-height: 360px; } 
+
 /* 头部 */
 .header{height: 59px; border-bottom: 1px solid #404553;  background-color: #393D49;}
 .logo{position: absolute; left: 0; top: 16px;}
@@ -407,3 +408,14 @@ body .site-demo-nav .layui-nav-item{line-height: 40px}
   to {transform: translate3d(0, 400px, 0) scale(2); opacity: 0.5;}
 }
 .site-out-up{-webkit-animation-duration: 3s; animation-duration: 3s; -webkit-animation-fill-mode: both; animation-fill-mode: both; -webkit-animation-name: site-anim-closeup; animation-name: site-anim-closeup; overflow: hidden;}
+
+.layui-input.range-value {
+  display: inline-block;
+  width: 46% !important;
+}
+.layui-input.range-value ~ .layui-word-aux {
+  padding: 0!important;
+  display: inline-block;
+  width: calc(8% - 10px);
+  text-align: center;
+}

@@ -4,16 +4,16 @@
  * @author iTanken
  * @since 20190329
  * 
- * TODO 数字键盘定位自适应
+ * TODO 数字键盘 overflow 相关处理
  */
 layui.define(['jquery'], function(exports) {
   var $ = layui.$, baseClassName = 'layui-input-number', keyClassName = 'layui-keyboard-number',
     style = ['<style type="text/css">',
-      '.', baseClassName, ' + .', keyClassName, ' { position: absolute; z-index: 20190402; background-color: #f2f2f2; display: block; ', 
-      ' outline: none; border-radius: 2px; border-style: solid; border-color: #e6e6e6; border-width: 0 1px 1px 1px; }', 
-      '.', keyClassName, ' .layui-card-body { font-family: Consolas; font-size: 17px; font-weight: 600; ',
-      ' text-align: center; background-color: #ffffff; cursor: pointer; }',
-      '.', keyClassName, ' .layui-card-body:active { background-color: #f2f2f2; }',
+      '.', baseClassName, ' + .', keyClassName, ' { position: absolute; z-index: 20190402; display: block; ', 
+      ' background-color: #f2f2f2; border-radius: 2px; border: 1px solid #e6e6e6; outline: none; }', 
+      '.', keyClassName, ' .layui-key-btn { font-family: Consolas; font-size: 17px; font-weight: 600; ',
+      ' text-align: center; background-color: #ffffff; cursor: pointer; overflow: hidden; padding: 10px; }',
+      '.', keyClassName, ' .layui-key-btn:active { background-color: #f2f2f2; }',
       '</style>'].join('');
   $('head link:last')[0] && $('head link:last').after(style) || $('head').append(style);
 
@@ -53,17 +53,17 @@ layui.define(['jquery'], function(exports) {
           btn123 = [
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="49 97">1</div>',
+                '<div class="layui-key-btn" data-keycode="49 97">1</div>',
               '</div>',
             '</div>',
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="50 98">2</div>',
+                '<div class="layui-key-btn" data-keycode="50 98">2</div>',
               '</div>',
             '</div>',
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="51 99">3</div>',
+                '<div class="layui-key-btn" data-keycode="51 99">3</div>',
               '</div>',
             '</div>'
           ].join(''),
@@ -71,17 +71,17 @@ layui.define(['jquery'], function(exports) {
           btn789 = [
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="55 103">7</div>',
+                '<div class="layui-key-btn" data-keycode="55 103">7</div>',
               '</div>',
             '</div>',
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="56 104">8</div>',
+                '<div class="layui-key-btn" data-keycode="56 104">8</div>',
               '</div>',
             '</div>',
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="57 105">9</div>',
+                '<div class="layui-key-btn" data-keycode="57 105">9</div>',
               '</div>',
             '</div>'
           ].join(''),
@@ -89,7 +89,7 @@ layui.define(['jquery'], function(exports) {
           backspace = [
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="8" lay-tips="退格">',
+                '<div class="layui-key-btn" data-keycode="8" lay-tips="退格">',
                   '<i class="layui-icon layui-icon-return"></i>',
                 '</div>',
               '</div>',
@@ -99,7 +99,7 @@ layui.define(['jquery'], function(exports) {
           add = [
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="38 39" lay-tips="增加">',
+                '<div class="layui-key-btn" data-keycode="38 39" lay-tips="增加">',
                   '<i class="layui-icon layui-icon-up"></i>',
                 '</div>',
               '</div>',
@@ -109,7 +109,7 @@ layui.define(['jquery'], function(exports) {
           reduce = [
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="37 40" lay-tips="减小">',
+                '<div class="layui-key-btn" data-keycode="37 40" lay-tips="减小">',
                   '<i class="layui-icon layui-icon-down"></i>',
                 '</div>',
               '</div>',
@@ -119,7 +119,7 @@ layui.define(['jquery'], function(exports) {
           reset = [
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="-1" lay-tips="清空">',
+                '<div class="layui-key-btn" data-keycode="-1" lay-tips="清空">',
                   '<i class="layui-icon layui-icon-refresh-1"></i>',
                 '</div>',
               '</div>',
@@ -133,17 +133,17 @@ layui.define(['jquery'], function(exports) {
             _this.options.rightBtns ? backspace : '',
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="52 100">4</div>',
+                '<div class="layui-key-btn" data-keycode="52 100">4</div>',
               '</div>',
             '</div>',
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="53 101">5</div>',
+                '<div class="layui-key-btn" data-keycode="53 101">5</div>',
               '</div>',
             '</div>',
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="54 102">6</div>',
+                '<div class="layui-key-btn" data-keycode="54 102">6</div>',
               '</div>',
             '</div>',
             _this.options.rightBtns ? add : '',
@@ -152,12 +152,12 @@ layui.define(['jquery'], function(exports) {
             _this.options.rightBtns ? '' : backspace,
             '<div class="layui-col-', sizeZero, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="48 96">0</div>',
+                '<div class="layui-key-btn" data-keycode="48 96">0</div>',
               '</div>',
             '</div>',
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-card-body" data-keycode="110 190">.</div>',
+                '<div class="layui-key-btn" data-keycode="110 190">.</div>',
               '</div>',
             '</div>',
             _this.options.rightBtns ? reset : '',
@@ -165,7 +165,9 @@ layui.define(['jquery'], function(exports) {
         '</div>'].join(''));
         
         $keyBoard = $input.next('.' + keyClassName);
-        $keyBoard.on('touchstart click', '.layui-card-body', function(e) {
+        $keyBoard.css({'top': $input[0].offsetTop + $input[0].offsetHeight - 1 + 'px', 'left': $input[0].offsetLeft + 'px'});
+        
+        $keyBoard.on('touchstart click', '.layui-key-btn', function(e) {
           _this.setValue(_this, $input, $(this));
           layui.stope(e);
           return false;
@@ -194,10 +196,10 @@ layui.define(['jquery'], function(exports) {
           inputNumber > 0 && _this.setValueRange(_this, $input, '-' + inputNumber);
         } else {
           // 监听数字键盘
-          $key = $keyBoard.find('.layui-card-body[data-keycode~=' + code + ']');
+          $key = $keyBoard.find('.layui-key-btn[data-keycode~=' + code + ']');
           $key[0] && $key.trigger('click').css("background-color", "#f2f2f2"), 
             $keyBoard.off('keyup').on('keyup', function(e) {
-              $('.layui-card-body[data-keycode]').css("background-color", "#ffffff");
+              $('.layui-key-btn[data-keycode]').css("background-color", "#ffffff");
             });
         }
         return false;
