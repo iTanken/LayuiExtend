@@ -9,7 +9,7 @@
 layui.define(['jquery'], function(exports) {
   var $ = layui.$, baseClassName = 'layui-input-number', keyClassName = 'layui-keyboard-number',
     style = ['<style type="text/css">',
-      '.', baseClassName, ' + .', keyClassName, ' { position: absolute; z-index: 20190402; display: block; ', 
+      '.', baseClassName, ' + .', keyClassName, ' { position: absolute; z-index: 19891013; display: block; ', 
       ' background-color: #f2f2f2; border-radius: 2px; border: 1px solid #e6e6e6; outline: none; }', 
       '.', keyClassName, ' .layui-key-btn { font-family: Consolas; font-size: 17px; font-weight: 600; ',
       ' text-align: center; background-color: #ffffff; cursor: pointer; overflow: hidden; padding: 10px; }',
@@ -185,8 +185,9 @@ layui.define(['jquery'], function(exports) {
         });
         _this.options.listening && _this.initKeyListening(_this, $input, $keyBoard);
       }
-      $keyBoard.focus();
-      typeof _this.options.showEnd === 'function' && _this.options.showEnd();
+      $keyBoard.on('focus', function() {
+        typeof _this.options.showEnd === 'function' && _this.options.showEnd($input, $keyBoard);
+      }).focus();
     },
     /** 初始化键盘监听事件 */
     initKeyListening: function(_this, $input, $keyBoard) {
@@ -208,7 +209,12 @@ layui.define(['jquery'], function(exports) {
               $('.layui-key-btn[data-keycode]').css("background-color", "#ffffff");
             });
         }
-        return false;
+        if (code > 36 && code < 41) {
+          // 上下左右
+          return false;
+        } else {
+          return true;
+        }
       });
     },
     /** 处理精确度 */
@@ -311,7 +317,7 @@ layui.define(['jquery'], function(exports) {
     },
     /** 提示 */
     tips: function($input, msg) {
-      return layer.tips(msg, $input, { tips: 1, time: 2e3, anim: 6, zIndex: 20190403 });
+      return layer.tips(msg, $input, { tips: 1, time: 2e3, anim: 6, zIndex: 19891014 });
     }
   };
 
