@@ -19,7 +19,7 @@
 > }).extend({
 >   numinput: 'numinput/numinput'
 > }).use(['form', 'numinput'], function() {
->   var form = layui.form, numinp = layui.numinput,;
+>   var $ = layui.$, form = layui.form, numinp = layui.numinput,;
 >   numinp.init({
 >     // 123：123键置顶, 789：789键置顶
 >     topBtns: 123,
@@ -28,7 +28,11 @@
 >     // 监听键盘事件
 >     listening: true,
 >     // 批量配置默认小数精确度
->     defaultPrec: ''
+>     defaultPrec: 0,
+>     // 初始化回调
+>     initEnd: $.noop,
+>     // 触发显示回调
+>     showEnd: $.noop
 >   });
 > });
 > ```

@@ -27,7 +27,11 @@ layui.define(['jquery'], function(exports) {
       // 监听键盘事件
       listening: true,
       // 批量配置默认小数精确度
-      defaultPrec: 0
+      defaultPrec: 0,
+      // 初始化回调
+      initEnd: $.noop,
+      // 触发显示回调
+      showEnd: $.noop
     },
     /** 初始化 */
     init: function(custom) {
@@ -38,6 +42,7 @@ layui.define(['jquery'], function(exports) {
       }).on('focus', function(e) {
         _this.showKeyboard(_this, $(this));
       });
+      typeof _this.options.initEnd === 'function' && _this.options.initEnd();
     },
     /** 显示数字键盘 */
     showKeyboard: function(_this, $input) {
@@ -181,6 +186,7 @@ layui.define(['jquery'], function(exports) {
         _this.options.listening && _this.initKeyListening(_this, $input, $keyBoard);
       }
       $keyBoard.focus();
+      typeof _this.options.showEnd === 'function' && _this.options.showEnd();
     },
     /** 初始化键盘监听事件 */
     initKeyListening: function(_this, $input, $keyBoard) {
