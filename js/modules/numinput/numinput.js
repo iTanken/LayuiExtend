@@ -124,7 +124,7 @@ layui.define(['jquery'], function(exports) {
           reset = [
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-key-btn" data-keycode="-1" lay-tips="清空">',
+                '<div class="layui-key-btn" data-keycode="46" lay-tips="清空">',
                   '<i class="layui-icon layui-icon-refresh-1"></i>',
                 '</div>',
               '</div>',
@@ -202,7 +202,7 @@ layui.define(['jquery'], function(exports) {
           // 减号切换负数
           inputNumber > 0 && _this.setValueRange(_this, $input, '-' + inputNumber);
         } else {
-          // 监听数字键盘
+          // 监听数字键盘，退格键(Backspace)/重置键(Delete)
           $key = $keyBoard.find('.layui-key-btn[data-keycode~=' + code + ']');
           $key[0] && $key.trigger('click').css("background-color", "#f2f2f2"), 
             $keyBoard.off('keyup').on('keyup', function(e) {
@@ -306,7 +306,7 @@ layui.define(['jquery'], function(exports) {
           var valLength = inputVal.length;
           valLength && $input.val(inputVal.substring(0, valLength - 1));
           return;
-        case -1:
+        case 46:
           // 清空键
           $input.val('');
           return;
