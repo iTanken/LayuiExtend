@@ -27,8 +27,8 @@
 >     rightBtns: true,
 >     // 监听键盘事件
 >     listening: true,
->     // 批量配置默认小数精确度
->     defaultPrec: 0,
+>     // 批量配置默认小数精确度，默认 -1 不处理精确度，0 表示禁止输入小数
+>     defaultPrec: -1,
 >     // 初始化回调
 >     initEnd: $.noop,
 >     // 触发显示回调
