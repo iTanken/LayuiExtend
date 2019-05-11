@@ -131,8 +131,8 @@ layui.define(['jquery'], function(exports) {
             '</div>'
           ].join('');
         
-        $input.after(['<div tabindex="0" hidefocus="true" class="', keyClassName, ' layui-unselect" ', 
-          'style="width:', $input.width() + 10, 'px;">',
+        $input.after(['<div tabindex="0" hidefocus="true" class="', keyClassName, 
+          ' layui-unselect layui-anim layui-anim-upbit" style="width:', $input.width() + 10, 'px;">',
           '<div class="layui-row layui-col-space1">',
             _this.options.topBtns == 789 ? btn789 : btn123,
             _this.options.rightBtns ? backspace : '',
@@ -170,7 +170,7 @@ layui.define(['jquery'], function(exports) {
         '</div>'].join(''));
         
         $keyBoard = $input.next('.' + keyClassName);
-        $keyBoard.css({'top': $input[0].offsetTop + $input[0].offsetHeight - 1 + 'px', 'left': $input[0].offsetLeft + 'px'});
+        $keyBoard.css({'top': $input[0].offsetTop + $input[0].offsetHeight + 4 + 'px', 'left': $input[0].offsetLeft + 'px'});
         
         $keyBoard.on('touchstart click', '.layui-key-btn', function(e) {
           _this.setValue(_this, $input, $(this));
