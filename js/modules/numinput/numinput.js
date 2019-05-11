@@ -26,8 +26,8 @@ layui.define(['jquery'], function(exports) {
       rightBtns: true,
       // 监听键盘事件
       listening: true,
-      // 批量配置默认小数精确度
-      defaultPrec: 0,
+      // 批量配置默认小数精确度，-1 不处理精确度
+      defaultPrec: -1,
       // 初始化回调
       initEnd: $.noop,
       // 触发显示回调
@@ -222,9 +222,9 @@ layui.define(['jquery'], function(exports) {
       var m, s, rs, prec = $.trim($input.data('prec'));
       prec = prec === '' ? _this.options.defaultPrec : prec;
       
-      val1 = val1 == '' ? 0 : val1;
+      val1 = val1 == '' ? ($input.attr('min') || 0) : val1;
       rs = val1.toString().split('.')[1];
-      if (prec < 1) {
+      if (prec < 0) {
         prec = rs && rs.length || prec;
       }
       
@@ -268,11 +268,17 @@ layui.define(['jquery'], function(exports) {
     /** 设置输入框值 */
     setValue: function(_this, $input, $key) {
       var inputVal = $.trim($input.val()), keyVal = $.trim($key.text()), 
-        prec = $input.data('prec') || _this.options.defaultPrec,
-        isDecimal = inputVal.indexOf('.') > -1;
-
+        prec = $.trim($input.data('prec')), isDecimal = inputVal.indexOf('.') > -1;
+        prec = prec === '0' ? 0 : _this.options.defaultPrec;
+        
       if ($.inArray(keyVal, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']) > -1) {
-        if (keyVal === '.' && (inputVal === '' || isDecimal)) return;
+        if (keyVal === '.') {
+         if (inputVal === '' || isDecimal) return;
+         if (prec === 0) {
+           _this.tips($input, '当前字段不允许输入小数！'); 
+           return;
+         }
+        }
         if (keyVal === '0' && inputVal.indexOf('0') === 0 && !isDecimal) return;
         if (inputVal.indexOf('.') > -1 && inputVal.split('.')[1].length >= prec && prec > 0) {
           _this.tips($input, '精确度为保留小数点后 ' + prec + ' 位！');
