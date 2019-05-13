@@ -9,7 +9,7 @@
 layui.define(['jquery'], function(exports) {
   var $ = layui.$, baseClassName = 'layui-input-number', keyClassName = 'layui-keyboard-number',
     style = ['<style type="text/css">',
-      '.', baseClassName, ' + .', keyClassName, ' { position: absolute; z-index: 19891013; display: block; ', 
+      '.', baseClassName, ' + .', keyClassName, ' { position: absolute; display: block; ', 
       ' background-color: #f2f2f2; border-radius: 2px; border: 1px solid #e6e6e6; outline: none; }', 
       '.', keyClassName, ' .layui-key-btn { font-family: Consolas; font-size: 17px; font-weight: 600; ',
       ' text-align: center; background-color: #ffffff; cursor: pointer; overflow: hidden; padding: 10px; }',
@@ -31,7 +31,9 @@ layui.define(['jquery'], function(exports) {
       // 初始化回调
       initEnd: $.noop,
       // 触发显示回调
-      showEnd: $.noop
+      showEnd: $.noop,
+      // z-index
+      zIndex: 19999999
     },
     /** 初始化 */
     init: function(custom) {
@@ -132,7 +134,8 @@ layui.define(['jquery'], function(exports) {
           ].join('');
         
         $input.after(['<div tabindex="0" hidefocus="true" class="', keyClassName, 
-          ' layui-unselect layui-anim layui-anim-upbit" style="width:', $input.width() + 10, 'px;">',
+          ' layui-unselect layui-anim layui-anim-upbit" ', 
+          'style="width:', $input.width() + 10, 'px;">',
           '<div class="layui-row layui-col-space1">',
             _this.options.topBtns == 789 ? btn789 : btn123,
             _this.options.rightBtns ? backspace : '',
@@ -170,7 +173,11 @@ layui.define(['jquery'], function(exports) {
         '</div>'].join(''));
         
         $keyBoard = $input.next('.' + keyClassName);
-        $keyBoard.css({'top': $input[0].offsetTop + $input[0].offsetHeight + 4 + 'px', 'left': $input[0].offsetLeft + 'px'});
+        $keyBoard.css({
+          'top': $input[0].offsetTop + $input[0].offsetHeight + 4 + 'px', 
+          'left': $input[0].offsetLeft + 'px',
+          'z-index': _this.options.zIndex
+        });
         
         $keyBoard.on('touchstart click', '.layui-key-btn', function(e) {
           _this.setValue(_this, $input, $(this));
@@ -323,7 +330,7 @@ layui.define(['jquery'], function(exports) {
     },
     /** 提示 */
     tips: function($input, msg) {
-      return layer.tips(msg, $input, { tips: 1, time: 2e3, anim: 6, zIndex: 19891014 });
+      return layer.tips(msg, $input, { tips: [1, '#01AAED'], time: 2e3, anim: 6, zIndex: this.options.zIndex });
     }
   };
 

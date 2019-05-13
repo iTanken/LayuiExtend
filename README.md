@@ -32,7 +32,9 @@
 >     // 初始化回调
 >     initEnd: $.noop,
 >     // 触发显示回调
->     showEnd: $.noop
+>     showEnd: $.noop,
+>     // 自定义 z-index
+>     zIndex: 19999999
 >   });
 > });
 > ```
