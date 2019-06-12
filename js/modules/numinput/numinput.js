@@ -28,10 +28,12 @@ layui.define(['jquery'], function(exports) {
       listening: true,
       // 批量配置默认小数精确度，-1 不处理精确度
       defaultPrec: -1,
-      // 初始化回调
+      // 初始化回调，无参
       initEnd: $.noop,
-      // 触发显示回调
+      // 触发显示回调，参数为当前输入框和数字键盘的 jQuery 对象
       showEnd: $.noop,
+      // 隐藏键盘回调，参数为当前输入框的 jQuery 对象
+      hideEnd: $.noop,
       // z-index
       zIndex: 19999999
     },
@@ -185,10 +187,9 @@ layui.define(['jquery'], function(exports) {
           return false;
         });
         $keyBoard.on('blur', function(e) {
-          var inputVal = $input.val();
-          $input.val(_this.toFixedPrec(_this, $input, inputVal));
-          // $keyBoard.hide();
-          $keyBoard.remove();
+          _this.setValueRange(_this, $input, _this.toFixedPrec(_this, $input));
+          $keyBoard.remove(); // $keyBoard.hide();
+          typeof _this.options.hideEnd === 'function' && _this.options.hideEnd($input);
         });
         _this.options.listening && _this.initKeyListening(_this, $input, $keyBoard);
       }
@@ -211,17 +212,18 @@ layui.define(['jquery'], function(exports) {
         } else {
           // 监听数字键盘，退格键(Backspace)/重置键(Delete)
           $key = $keyBoard.find('.layui-key-btn[data-keycode~=' + code + ']');
-          $key[0] && $key.trigger('click').css("background-color", "#f2f2f2"), 
+          if ($key[0]) {
+            $key.trigger('click').css("background-color", "#f2f2f2");
             $keyBoard.off('keyup').on('keyup', function(e) {
               $('.layui-key-btn[data-keycode]').css("background-color", "#ffffff");
             });
+          }
+          if (code > 36 && code < 41) {
+            // 上下左右键，防止触发混动条滑动事件
+            return false;
+          }
         }
-        if (code > 36 && code < 41) {
-          // 上下左右
-          return false;
-        } else {
-          return true;
-        }
+        return true;
       });
     },
     /** 处理精确度 */
@@ -229,6 +231,7 @@ layui.define(['jquery'], function(exports) {
       var m, s, rs, prec = $.trim($input.data('prec'));
       prec = prec === '' ? _this.options.defaultPrec : prec;
       
+      val1 = val1 === undefined ? $input.val() : val1;
       val1 = val1 == '' ? ($input.attr('min') || 0) : val1;
       rs = val1.toString().split('.')[1];
       if (prec < 0) {
@@ -293,7 +296,7 @@ layui.define(['jquery'], function(exports) {
         };
         
         inputVal = (keyVal !== '.' && inputVal === '0' ? '' : inputVal) + keyVal;
-        _this.setValueRange(_this, $input, inputVal);
+        $input.val(inputVal);
       } else {
         var changeVal = inputVal === '' ? 0 : inputVal,
           step = $input.attr('step');
@@ -307,20 +310,20 @@ layui.define(['jquery'], function(exports) {
         // right function buttons
         switch($key.data('keycode')) {
         case '38 39':
-          // 增加键
+          // ↑、→ 键增加
           changeVal = _this.toFixedPrec(_this, $input, changeVal, step);
           break;
         case '37 40':
-          // 减小键
+          // ↓、← 键减小
           changeVal = _this.toFixedPrec(_this, $input, changeVal, -step);
           break;
         case 8:
-          // 退格键
+          // Backspace 键退格
           var valLength = inputVal.length;
           valLength && $input.val(inputVal.substring(0, valLength - 1));
           return;
         case 46:
-          // 清空键
+          // Delete 键清空
           $input.val('');
           return;
         }
