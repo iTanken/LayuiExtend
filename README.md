@@ -4,9 +4,9 @@
 
 ## 组件列表
 
-* [数字输入框](https://github.com/iTanken/LayuiExtend/tree/master/js/modules/numinput)
+### 1. [数字输入框](https://github.com/iTanken/LayuiExtend/tree/master/js/modules/numinput)
 
-### 用法：
+#### 用法：
 
 [在线示例](https://itanken.github.io/LayuiExtend/)
 > 支持 min/max，及附加的 data-prec 用于控制小数精确度：
@@ -47,4 +47,4 @@
 > });
 > ```
 
-* developing...
+### 2. developing ···
