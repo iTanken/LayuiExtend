@@ -1,10 +1,9 @@
 /**
  * Layui 数字输入组件
  * 
- * @author iTanken
- * @since 20190329
- * 
- * TODO 数字键盘 overflow 相关处理
+ * @author  iTanken
+ * @since   20190329
+ * @version 20200119：数字键盘纵向定位自适应
  */
 layui.define(['jquery'], function(exports) {
   var $ = layui.$, baseClassName = 'layui-input-number', keyClassName = 'layui-keyboard-number',
@@ -51,10 +50,7 @@ layui.define(['jquery'], function(exports) {
     /** 显示数字键盘 */
     showKeyboard: function(_this, $input) {
       var $keyBoard = $input.next('.' + keyClassName);
-      if ($keyBoard[0]) {
-        // 已存在，直接显示
-        $keyBoard.show();
-      } else {
+      if (!$keyBoard[0]) {
         // 不存在，添加元素
         var sizeXS = _this.options.rightBtns ? 'xs3' : 'xs4',
           sizeZero = _this.options.rightBtns ? 'xs6' : 'xs4',
@@ -175,11 +171,6 @@ layui.define(['jquery'], function(exports) {
         '</div>'].join(''));
         
         $keyBoard = $input.next('.' + keyClassName);
-        $keyBoard.css({
-          'top': $input[0].offsetTop + $input[0].offsetHeight + 4 + 'px', 
-          'left': $input[0].offsetLeft + 'px',
-          'z-index': _this.options.zIndex
-        });
         
         $keyBoard.on('touchstart click', '.layui-key-btn', function(e) {
           _this.setValue(_this, $input, $(this));
@@ -193,7 +184,26 @@ layui.define(['jquery'], function(exports) {
         });
         _this.options.listening && _this.initKeyListening(_this, $input, $keyBoard);
       }
-      $keyBoard.on('focus', function() {
+
+      _this.display(_this, $input, $keyBoard);
+    },
+    /** 设置数字键盘样式并显示 */
+    display: function(_this, $input, $keyBoard) {
+      var showTop = $input[0].offsetTop + $input[0].offsetHeight + 4, boardHeight = $keyBoard.height(),
+        $win = $(window), topOffset = $keyBoard.offset().top + $keyBoard.outerHeight() + 4 - $win.scrollTop();
+      
+      // 数字键盘纵向定位自适应
+      if (topOffset + boardHeight > $win.height() && topOffset >= boardHeight) {
+        showTop = $input[0].offsetTop - boardHeight - 5;
+      }
+      
+      $keyBoard.css({
+        'top': showTop + 'px', 
+        'left': $input[0].offsetLeft + 'px',
+        'z-index': _this.options.zIndex
+      });
+      
+      $keyBoard.show(200, function() {
         typeof _this.options.showEnd === 'function' && _this.options.showEnd($input, $keyBoard);
       }).focus();
     },
