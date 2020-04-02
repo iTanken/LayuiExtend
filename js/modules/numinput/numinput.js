@@ -59,6 +59,8 @@ layui.define(['jquery'], function(exports) {
     },
     /** 显示数字键盘 */
     showKeyboard: function(_this, $input) {
+      // 2020-04-02：修复小数输入问题，将 number 类型输入框一律设置为 text
+      $input.prop('type') === 'number' && $input.attr('type', 'text');
       var $keyBoard = $input.next('.' + keyClassName);
       if (!$keyBoard[0]) {
         // 不存在，添加元素
@@ -312,8 +314,6 @@ layui.define(['jquery'], function(exports) {
             _this.tips($input, '当前字段不允许输入小数！'); 
             return;
           }
-          // 2020-04-02：修复小数输入问题
-          $input.prop('type') === 'number' && $input.attr('type', 'text');
         }
         if (keyVal === '0' && inputVal.indexOf('0') === 0 && !isDecimal) {
           return;
