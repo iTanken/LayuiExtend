@@ -249,7 +249,8 @@ layui.define(['jquery'], function(exports) {
     /** 处理精确度 */
     toFixedPrec: function(_this, $input, val1, val2) {
       var m, s, rs, prec = $.trim($input.data('prec'));
-      prec = prec === '' ? _this.options.defaultPrec : prec;
+      // 2020-04-02：修复获取小数精确度配置值问题
+      prec = parseInt(prec === '' || isNaN(prec) ? _this.options.defaultPrec : prec, 10);
 
       val1 = val1 === undefined ? $input.val() : val1;
       val1 = val1 == '' ? ($input.attr('min') || 0) : val1;
@@ -299,19 +300,24 @@ layui.define(['jquery'], function(exports) {
     setValue: function(_this, $input, $key) {
       var inputVal = $.trim($input.val()), keyVal = $.trim($key.text()), changeVal,
         prec = $.trim($input.data('prec')), isDecimal = inputVal.indexOf('.') > -1;
-        prec = prec === '0' ? 0 : _this.options.defaultPrec;
+      // 2020-04-02：修复获取小数精确度配置值问题
+        prec = parseInt(prec === '' || isNaN(prec) ? _this.options.defaultPrec : prec, 10);
 
       if ($.inArray(keyVal, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']) > -1) {
         if (keyVal === '.') {
-         if (inputVal === '' || isDecimal) return;
-         if (prec === 0) {
-           _this.tips($input, '当前字段不允许输入小数！'); 
-           return;
-         }
-         // 2020-04-02：修复小数输入问题
-         $input.prop('type') === 'number' && $input.attr('type', 'text');
+          if (inputVal === '' || isDecimal) {
+            return;
+          }
+          if (prec === 0) {
+            _this.tips($input, '当前字段不允许输入小数！'); 
+            return;
+          }
+          // 2020-04-02：修复小数输入问题
+          $input.prop('type') === 'number' && $input.attr('type', 'text');
         }
-        if (keyVal === '0' && inputVal.indexOf('0') === 0 && !isDecimal) return;
+        if (keyVal === '0' && inputVal.indexOf('0') === 0 && !isDecimal) {
+          return;
+        }
         if (inputVal.indexOf('.') > -1 && inputVal.split('.')[1].length >= prec && prec > 0) {
           _this.tips($input, '精确度为保留小数点后 ' + prec + ' 位！');
           return;
