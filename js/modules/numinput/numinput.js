@@ -288,11 +288,11 @@ layui.define(['jquery'], function(exports) {
 
       if (value < minVal) {
         value = minVal;
-        _this.tips($input, '最小值为 ' + minVal + '！');
+        _this.tips($input, '最小值为 <kbd>' + minVal + '</kbd>！');
       }
       if (value > maxVal) {
         value = maxVal;
-        _this.tips($input, '最大值为 ' + maxVal + '！');
+        _this.tips($input, '最大值为 <kbd>' + maxVal + '</kbd>！');
       }
       value = value < minVal ? minVal : (value > maxVal ? maxVal : value);
 
@@ -319,7 +319,7 @@ layui.define(['jquery'], function(exports) {
           return;
         }
         if (inputVal.indexOf('.') > -1 && inputVal.split('.')[1].length >= prec && prec > 0) {
-          _this.tips($input, '精确度为保留小数点后 ' + prec + ' 位！');
+          _this.tips($input, '精确度为保留小数点后 <kbd>' + prec + '</kbd> 位！');
           return;
         };
 
