@@ -2,8 +2,9 @@
  * Layui 数字输入组件
  * 
  * @author  iTanken
- * @since   20190329
- * @version 20200119：数字键盘纵向定位自适应
+ * @since   2019-03-29
+ * @version 2020-01-19：数字键盘纵向定位自适应
+ * @version 2020-04-02：添加功能按钮悬浮提示开关参数；添加悬浮提示内部键盘按钮样式；修复 number 类型输入框小数输入问题；优化最大最小值信息提示，在键入数字时即可实时提示，无需等到键盘关闭
  */
 layui.define(['jquery'], function(exports) {
   var $ = layui.$, baseClassName = 'layui-input-number', keyClassName = 'layui-keyboard-number',
@@ -13,6 +14,9 @@ layui.define(['jquery'], function(exports) {
       '.', keyClassName, ' .layui-key-btn { font-family: Consolas; font-size: 17px; font-weight: 600; ',
       ' text-align: center; background-color: #ffffff; cursor: pointer; overflow: hidden; padding: 10px; }',
       '.', keyClassName, ' .layui-key-btn:active { background-color: #f2f2f2; }',
+      '.layui-layer-tips kbd { display: inline-block; padding: 3px 5px; font-size: 11px;',
+      ' line-height: 10px; color: #24292e; vertical-align: middle; background-color: #fafbfc;',
+      ' border: 1px solid #d1d5da; border-radius: 3px; box-shadow: inset 0 -1px 0 #d1d5da; }',
       '</style>'].join('');
   $('head link:last')[0] && $('head link:last').after(style) || $('head').append(style);
 
@@ -23,6 +27,8 @@ layui.define(['jquery'], function(exports) {
       topBtns: 123,
       // 右侧功能按钮
       rightBtns: true,
+      // 功能按钮提示
+      showTips: true,
       // 监听键盘事件
       listening: true,
       // 批量配置默认小数精确度，-1 不处理精确度
@@ -46,6 +52,10 @@ layui.define(['jquery'], function(exports) {
         _this.showKeyboard(_this, $(this));
       });
       typeof _this.options.initEnd === 'function' && _this.options.initEnd();
+    },
+    /** 获取按键悬浮提示 */
+    getTips: function(tip) {
+      return this.options.showTips ? (' lay-tips="' + tip + '"') : '';
     },
     /** 显示数字键盘 */
     showKeyboard: function(_this, $input) {
@@ -94,8 +104,8 @@ layui.define(['jquery'], function(exports) {
           backspace = [
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-key-btn" data-keycode="8" lay-tips="退格">',
-                  '<i class="layui-icon layui-icon-return"></i>',
+                '<div class="layui-key-btn" data-keycode="8">',
+                  '<i class="layui-icon layui-icon-return"', _this.getTips('退格 <kbd>Backspace</kbd>'), '></i>',
                 '</div>',
               '</div>',
             '</div>'
@@ -104,8 +114,8 @@ layui.define(['jquery'], function(exports) {
           add = [
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-key-btn" data-keycode="38 39" lay-tips="增加">',
-                  '<i class="layui-icon layui-icon-up"></i>',
+                '<div class="layui-key-btn" data-keycode="38 39">',
+                  '<i class="layui-icon layui-icon-up"', _this.getTips('增加 <kbd>↑</kbd>'), '></i>',
                 '</div>',
               '</div>',
             '</div>'
@@ -114,8 +124,8 @@ layui.define(['jquery'], function(exports) {
           reduce = [
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-key-btn" data-keycode="37 40" lay-tips="减小">',
-                  '<i class="layui-icon layui-icon-down"></i>',
+                '<div class="layui-key-btn" data-keycode="37 40">',
+                  '<i class="layui-icon layui-icon-down"', _this.getTips('减小 <kbd>↓</kbd>'), '></i>',
                 '</div>',
               '</div>',
             '</div>'
@@ -124,13 +134,13 @@ layui.define(['jquery'], function(exports) {
           reset = [
             '<div class="layui-col-', sizeXS, '">',
               '<div class="layui-card">',
-                '<div class="layui-key-btn" data-keycode="46" lay-tips="清空">',
-                  '<i class="layui-icon layui-icon-refresh-1"></i>',
+                '<div class="layui-key-btn" data-keycode="46">',
+                  '<i class="layui-icon layui-icon-refresh-1"', _this.getTips('清空 <kbd>Delete</kbd>'), '></i>',
                 '</div>',
               '</div>',
             '</div>'
           ].join('');
-        
+
         $input.after(['<div tabindex="0" hidefocus="true" class="', keyClassName, 
           ' layui-unselect layui-anim layui-anim-upbit" ', 
           'style="width:', $input.width() + 10, 'px;">',
@@ -169,9 +179,9 @@ layui.define(['jquery'], function(exports) {
             _this.options.rightBtns ? reset : '',
           '</div>',
         '</div>'].join(''));
-        
+
         $keyBoard = $input.next('.' + keyClassName);
-        
+
         $keyBoard.on('touchstart click', '.layui-key-btn', function(e) {
           _this.setValue(_this, $input, $(this));
           layui.stope(e);
@@ -191,18 +201,18 @@ layui.define(['jquery'], function(exports) {
     display: function(_this, $input, $keyBoard) {
       var showTop = $input[0].offsetTop + $input[0].offsetHeight + 4, boardHeight = $keyBoard.height(),
         $win = $(window), topOffset = $keyBoard.offset().top + $keyBoard.outerHeight() + 4 - $win.scrollTop();
-      
+
       // 数字键盘纵向定位自适应
       if (topOffset + boardHeight > $win.height() && topOffset >= boardHeight) {
         showTop = $input[0].offsetTop - boardHeight - 5;
       }
-      
+
       $keyBoard.css({
         'top': showTop + 'px', 
         'left': $input[0].offsetLeft + 'px',
         'z-index': _this.options.zIndex
       });
-      
+
       $keyBoard.show(200, function() {
         typeof _this.options.showEnd === 'function' && _this.options.showEnd($input, $keyBoard);
       }).focus();
@@ -240,18 +250,18 @@ layui.define(['jquery'], function(exports) {
     toFixedPrec: function(_this, $input, val1, val2) {
       var m, s, rs, prec = $.trim($input.data('prec'));
       prec = prec === '' ? _this.options.defaultPrec : prec;
-      
+
       val1 = val1 === undefined ? $input.val() : val1;
       val1 = val1 == '' ? ($input.attr('min') || 0) : val1;
       rs = val1.toString().split('.')[1];
       if (prec < 0) {
         prec = rs && rs.length || prec;
       }
-      
+
       val2 = val2 || 0;
       rs = val2.toString().split('.')[1];
       prec = Math.max(prec, rs ? rs.length : 0);
-      
+
       m = Math.pow(10, prec);
       s = ((val1 * m + val2 * m).toFixed(0) / m).toString();
       rs = s.indexOf('.');
@@ -268,11 +278,11 @@ layui.define(['jquery'], function(exports) {
     setValueRange: function(_this, $input, value) {
       var minVal = $input.attr('min') || Math.pow(-2, 63), 
         maxVal = $input.attr('max') || Math.pow(2, 63) - 1;
-        
+
       minVal = typeof minVal === 'string' && minVal.indexOf('0') > -1 ? parseFloat(minVal) : parseInt(minVal);
       maxVal = typeof maxVal === 'string' && maxVal.indexOf('0') > -1 ? parseFloat(maxVal) : parseInt(maxVal);
       // value = typeof value === 'string' && value.indexOf('0') > -1 ? parseFloat(value) : parseInt(value);
-      
+
       if (value < minVal) {
         value = minVal;
         _this.tips($input, '最小值为 ' + minVal + '！');
@@ -282,15 +292,15 @@ layui.define(['jquery'], function(exports) {
         _this.tips($input, '最大值为 ' + maxVal + '！');
       }
       value = value < minVal ? minVal : (value > maxVal ? maxVal : value);
-      
+
       $input.val(value);
     },
     /** 设置输入框值 */
     setValue: function(_this, $input, $key) {
-      var inputVal = $.trim($input.val()), keyVal = $.trim($key.text()), 
+      var inputVal = $.trim($input.val()), keyVal = $.trim($key.text()), changeVal,
         prec = $.trim($input.data('prec')), isDecimal = inputVal.indexOf('.') > -1;
         prec = prec === '0' ? 0 : _this.options.defaultPrec;
-        
+
       if ($.inArray(keyVal, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']) > -1) {
         if (keyVal === '.') {
          if (inputVal === '' || isDecimal) return;
@@ -298,17 +308,19 @@ layui.define(['jquery'], function(exports) {
            _this.tips($input, '当前字段不允许输入小数！'); 
            return;
          }
+         // 2020-04-02：修复小数输入问题
+         $input.prop('type') === 'number' && $input.attr('type', 'text');
         }
         if (keyVal === '0' && inputVal.indexOf('0') === 0 && !isDecimal) return;
         if (inputVal.indexOf('.') > -1 && inputVal.split('.')[1].length >= prec && prec > 0) {
           _this.tips($input, '精确度为保留小数点后 ' + prec + ' 位！');
           return;
         };
-        
-        inputVal = (keyVal !== '.' && inputVal === '0' ? '' : inputVal) + keyVal;
+
+        changeVal = inputVal = (keyVal !== '.' && inputVal === '0' ? '' : inputVal) + keyVal;
         $input.val(inputVal);
       } else {
-        var changeVal = inputVal === '' ? 0 : inputVal,
+        changeVal = inputVal === '' ? 0 : inputVal,
           step = $input.attr('step');
         if (isDecimal) {
           step = parseFloat(step) || 0.1;
@@ -337,9 +349,9 @@ layui.define(['jquery'], function(exports) {
           $input.val('');
           return;
         }
-        
-        _this.setValueRange(_this, $input, changeVal);
       }
+      // 2020-04-02：优化最大最小值信息提示，在键入数字时即可实时提示，无需等到键盘关闭
+      _this.setValueRange(_this, $input, changeVal);
     },
     /** 提示 */
     tips: function($input, msg) {
