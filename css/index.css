@@ -261,8 +261,8 @@ body .site-demo-nav .layui-nav-item{line-height: 40px}
 .site-demo-text a{color: #01AAED;}
 
 .site-demo-laytpl{text-align: center;}
-.site-demo-laytpl textarea,
-.site-demo-laytpl div span{width: 40%;  padding: 15px; margin: 0 15px;}
+.layui-textarea { min-height: 70px!important; }
+.site-demo-laytpl textarea, .site-demo-laytpl div span{width: 40%;  padding: 15px; margin: 0 15px;}
 .site-demo-laytpl textarea{height: 300px; border: none; background-color: #3F3F3F; color: #E3CEAB;  resize: none;}
 .site-demo-laytpl div span{display: inline-block; text-align: center; background: #101010; color: #fff;}
 .site-demo-tplres{margin: 10px 0; text-align: center}

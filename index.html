@@ -101,13 +101,13 @@
               placeholder="默认示例">赋值后再渲染工具条支持重置为初始值。</textarea>
             </div>
             <div class="layui-form-item">
-              <input class="layui-input" id="layext-textool-max-noreset" maxlength="32" placeholder="有最大字数限制，关闭重置按钮">
+              <input class="layui-input" id="layext-textool-max-noreset" placeholder="初始化时指定最大字数限制，关闭重置按钮">
             </div>
             <div class="layui-form-item">
-              <input class="layui-input" id="layext-textool-text-left" placeholder="无最大字数限制，自定义按钮顺序，居左">
+              <input class="layui-input" id="layext-textool-text-left" placeholder="无最大字数限制，自定义按钮顺序，居左，默认收起">
             </div>
             <blockquote class="layui-elem-quote layui-quote-nm">
-              <p>支持 <code class="layui-badge layui-badge-rim">maxlength</code> 最大字数显示及输入字数统计、复制内容、清空内容等功能。可批量渲染或单个渲染。</p>
+              <p>支持 <code class="layui-badge layui-badge-rim">maxlength</code> 最大字数显示及字数统计、复制、清空和重置等功能。可批量渲染或单个渲染。</p>
             </blockquote>
           </div>
         </div>
@@ -148,21 +148,23 @@ layui.config({
 	numinput: 'numinput/numinput.min',
 	textool: 'textool/textool.min'
 }).use(['form', 'numinput', 'textool', 'code', 'util'], function() {
-  var form = layui.form, numinp = layui.numinput, textool = layui.textool, util = layui.util, layer = layui.layer;
+  var $ = layui.$, form = layui.form, numinp = layui.numinput, textool = layui.textool, 
+    util = layui.util, layer = layui.layer;
   // 初始化数组输入组件示例
   numinp.init({ rightBtns: true });
+
   // 初始化文本工具组件默认示例
   textool.init({
     initEnd: function() {
-      layer.msg('textool 初始化 End!');
+      layer.msg('textool 1 初始化 End!');
       console.log(arguments);
     },
     showEnd: function($target, $pane) {
-      layer.msg('textool 展开 End!');
+      layer.msg('textool 1 展开 End!');
       console.log(arguments);
     },
     hideEnd: function($target, $pane) {
-      layer.msg('textool 收起 End!');
+      layer.msg('textool 1 收起 End!');
       console.log(arguments);
     },
     tipType: 'laytips',
@@ -171,16 +173,17 @@ layui.config({
   // 初始化文本工具组件关闭重置按钮示例
   textool.init({
     eleId: 'layext-textool-max-noreset',
+    maxlength: 32,
     initEnd: function() {
-      layer.msg('textool 初始化 End!');
+      layer.msg('textool 2 初始化 End!');
       console.log(arguments);
     },
     showEnd: function($target, $pane) {
-      layer.msg('textool 展开 End!');
+      layer.msg('textool 2 展开 End!');
       console.log(arguments);
     },
     hideEnd: function($target, $pane) {
-      layer.msg('textool 收起 End!');
+      layer.msg('textool 2 收起 End!');
       console.log(arguments);
     },
     tools: ['count', 'copy', 'clear']
@@ -189,24 +192,24 @@ layui.config({
   textool.init({
     eleId: 'layext-textool-text-left',
     initEnd: function() {
-      layer.msg('textool 初始化 End!');
+      layer.msg('textool 3 初始化 End!');
       console.log(arguments);
     },
     showEnd: function($target, $pane) {
-      layer.msg('textool 展开 End!');
+      layer.msg('textool 3 展开 End!');
       console.log(arguments);
     },
     hideEnd: function($target, $pane) {
-      layer.msg('textool 收起 End!');
+      layer.msg('textool 3 收起 End!');
       console.log(arguments);
     },
-    tools: ['clear', 'reset', 'copy', 'count'],
+    initShow: false,
+    tools: ['clear', 'copy', 'count'],
     align: 'left'
   });
 
   util.fixbar();
   layui.code({ about: false, height: '500px' });
-  var $ = layui.$;
 });
 </script>
 </body>

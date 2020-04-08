@@ -17,13 +17,9 @@
 >   <input class="layui-input layui-input-number" min="0" max="100" data-prec="4">
 > </div>
 > ```
-
----
-
+>
 > ``` javascript
-> layui.config({
->   base: 'js/modules/'
-> }).extend({
+> layui.config({ base: 'js/modules/' }).extend({
 >   numinput: 'numinput/numinput'
 > }).use(['form', 'numinput'], function() {
 >   var $ = layui.$, form = layui.form, numinp = layui.numinput;
@@ -50,6 +46,8 @@
 > });
 > ```
 
+---
+
 ### 2. [文本工具条](https://github.com/iTanken/LayuiExtend/tree/master/js/modules/textool)
 
 [在线示例](https://itanken.github.io/LayuiExtend/)
@@ -57,23 +55,23 @@
 #### 文本工具条用法
 
 > ``` javascript
-> layui.config({
->   base: 'js/modules/'
-> }).extend({
->   numinput: 'numinput/numinput'
-> }).use(['form', 'numinput'], function() {
+> layui.config({ base: 'js/modules/' }).extend({
+>   numinput: 'textool/textool.min'
+> }).use(['form', 'textool'], function() {
 >   var $ = layui.$, form = layui.form, textool = layui.textool;
 >   textool.init({
 >     // 根据元素 id 值单独渲染，为空默认根据 class='layext-text-tool' 批量渲染
 >     eleId: null,
 >     // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
->     maxlength: -1, 
+>     maxlength: -1,
 >     // 初始化回调，无参
 >     initEnd: $.noop,
 >     // 显示回调，参数为当前输入框和工具条面板的 jQuery 对象
 >     showEnd: $.noop,
 >     // 隐藏回调，参数为当前输入框和工具条面板的 jQuery 对象
 >     hideEnd: $.noop,
+>     // 初始化展开，默认展开，否则收起
+>     initShow: true,
 >     // 启用指定工具模块，默认依次为字数统计、复制内容、重置内容、清空内容，按数组顺序显示
 >     tools: ['count', 'copy', 'reset', 'clear'],
 >     // 工具按钮提示类型，默认为 'title' 属性，可选 'laytips'，使用 layer 组件的吸附提示， 其他值不显示提示
@@ -95,5 +93,7 @@
 >   });
 > });
 > ```
+
+---
 
 ### 3. developing ···
