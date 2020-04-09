@@ -120,13 +120,12 @@ layui.define(['jquery'], function (exports) {
   /** 添加文本工具 */
   Class.prototype.addTextool = function (_this, $target) {
     var $extPane = $target.next('.' + extClassName);
-    if (!$extPane[0]) {
-      // 不存在，添加元素
-      $target.after(_this.getToolsNode(_this, $target));
-      $extPane = $target.next('.' + extClassName);
-
-      _this.setEvent(_this, $target, $extPane);
-    }
+    // 若已存在，则移除元素，支持重复渲染
+    $extPane && $extPane.length && $extPane.remove();
+    // 添加元素
+    $target.after(_this.getToolsNode(_this, $target));
+    $extPane = $target.next('.' + extClassName);
+    _this.setEvent(_this, $target, $extPane);
 
     $extPane.fadeIn(200, function() {
       !_this.options.initShow && $extPane.find('.' + tools.hideClass).trigger('click');
