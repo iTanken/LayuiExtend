@@ -27,14 +27,16 @@ layui.define(['jquery'], function (exports) {
       hideEnd: $.noop,
       // 初始化展开，默认展开，否则收起
       initShow: true,
+      // 工具条是否位于输入框内部，默认位于外部
+      inner: false,
+      // 工具条对齐方向，默认右对齐，可选左对齐 'left'
+      align: 'right',
       // 启用指定工具模块，默认依次为字数统计、复制内容、重置内容、清空内容，按数组顺序显示
       tools: ['count', 'copy', 'reset', 'clear'],
       // 工具按钮提示类型，默认为 'title' 属性，可选 'laytips'，使用 layer 组件的吸附提示， 其他值不显示提示
       tipType: 'title',
       // 吸附提示背景颜色
       tipColor: '#01AAED',
-      // 对齐方向，默认右对齐，可选左对齐 'left'
-      align: 'right',
       // 工具条字体颜色
       color: '#666666',
       // 工具条背景颜色
@@ -75,7 +77,7 @@ layui.define(['jquery'], function (exports) {
 
     style = ['<style type="text/css">',
       '#', tools.copyTextId, ' { width: 0; height: 0; position: absolute; top: -190000px; }',
-      _this.selector, ' { position: relative; z-index: ', _this.options.zIndex + 1, '; }',
+      _this.selector, ' { position: relative; z-index: ', _this.options.zIndex + (_this.options.inner ? 0 : 1), '; }',
       _this.selector, ' + .', extClassName, ' { position: relative; z-index: ', _this.options.zIndex, '; margin-top: -2px; display: block; outline: none; }',
       _this.selector, ' + .', extClassName, ' * { color: ', (_this.options.color || '#666666'), '; }',
       _this.selector, ' + .', extClassName, ' a > i { font-size: 12px!important; }',
@@ -87,9 +89,14 @@ layui.define(['jquery'], function (exports) {
       _this.selector, ' + .', extClassName, ' .', tools.lengthOverClass, ' { color: #FF5722; }',
       _this.selector, ' + .', extClassName, ' .', tools.countClass, ', ', _this.selector, ' + .', extClassName, ' .', tools.maxClass, ' { display: inline-block; min-width: 26px; height: 16px; line-height: 18px; }',
       _this.selector, ' + .', extClassName, ' > .layui-badge { overflow: hidden; border-color: ', (_this.options.borderColor || '#E6E6E6'), '; background-color: ', (_this.options.bgColor || '#FFFFFF'), '; }',
+      _this.selector, ' + .', extClassName, '-r.', extClassName, '-inner > .layui-badge { border-right: 0 none; border-radius: 15px 0 17px; margin-right: 1px; }',
+      _this.selector, ' + .', extClassName, '-l.', extClassName, '-inner > .layui-badge { border-left: 0 none; border-radius: 0 15px 0; margin-left: 1px; }',
+      _this.selector, ' + .', extClassName, '-inner > .layui-badge  { top: -18px; border-bottom: 0 none; opacity: 0.8; }',
+      _this.selector, ' + .', extClassName, '-inner > .layui-badge:hover  { opacity: 1; }',
       _this.selector, ' + .', extClassName, ' .', tools.maxClass, ' { opacity: 0.9; }',
       _this.selector, ' + .', extClassName, '-r { text-align: right; }',
       _this.selector, ' + .', extClassName, '-l { text-align: left; }',
+      _this.selector, ' + .', extClassName, '-inner { height: 0; }',
       '</style>'].join('');
 
     $('head link:last')[0] && $('head link:last').after(style) || $('head').append(style);
@@ -241,8 +248,8 @@ layui.define(['jquery'], function (exports) {
       alignClass = extClassName + '-r';
     }
     // 处理工具条节点
-    nodes = ['<span class="layui-unselect ', extClassName, ' ', alignClass, ' ', $.trim(_this.options.className),
-      ' layui-anim layui-anim-fadein"><span class="layui-badge layui-badge-rim">'];
+    nodes = ['<span class="layui-unselect ', extClassName, ' ', alignClass, ' ', (_this.options.inner ? extClassName + '-inner ' : ''),
+      $.trim(_this.options.className), ' layui-anim layui-anim-fadein"><span class="layui-badge layui-badge-rim">'];
     !alignRight && nodes.push(tools.hide);
     for (var i = 0; i < _this.options.tools.length; i++) {
       nodes.push(tools[_this.options.tools[i]] || '');

@@ -98,10 +98,10 @@
           <div class="layui-form">
             <div class="layui-form-item">
               <textarea class="layui-textarea layext-text-tool" id="layext-textool-textarea" maxlength="512" 
-              placeholder="默认示例">赋值后再渲染工具条支持重置为初始值。</textarea>
+              placeholder="默认示例">置于输入框内部、赋值后再渲染工具条支持重置为初始值。</textarea>
             </div>
             <div class="layui-form-item">
-              <input class="layui-input" id="layext-textool-max-noreset" placeholder="初始化时指定最大字数限制，关闭重置按钮">
+              <input class="layui-input" id="layext-textool-max-noreset" placeholder="初始化时指定最大字数限制，关闭重置按钮，使用吸附提示">
             </div>
             <div class="layui-form-item">
               <input class="layui-input" id="layext-textool-text-left" placeholder="无最大字数限制，自定义按钮顺序，居左，默认收起">
@@ -155,6 +155,7 @@ layui.config({
 
   // 初始化文本工具组件默认示例
   textool.init({
+    inner: true,
     initEnd: function() {
       layer.msg('textool 1 初始化 End!');
       console.log(arguments);
@@ -166,9 +167,7 @@ layui.config({
     hideEnd: function($target, $pane) {
       layer.msg('textool 1 收起 End!');
       console.log(arguments);
-    },
-    tipType: 'laytips',
-    tipColor: '#5FB878'
+    }
   });
   // 初始化文本工具组件关闭重置按钮示例
   textool.init({
@@ -186,7 +185,9 @@ layui.config({
       layer.msg('textool 2 收起 End!');
       console.log(arguments);
     },
-    tools: ['count', 'copy', 'clear']
+    tools: ['count', 'copy', 'clear'],
+    tipType: 'laytips',
+    tipColor: '#5FB878'
   });
   // 初始化文本工具组件居左示例
   textool.init({

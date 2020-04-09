@@ -69,17 +69,19 @@
 >     // 显示回调，参数为当前输入框和工具条面板的 jQuery 对象
 >     showEnd: $.noop,
 >     // 隐藏回调，参数为当前输入框和工具条面板的 jQuery 对象
->     hideEnd: $.noop,
+>     hideEnd: $.n
 >     // 初始化展开，默认展开，否则收起
 >     initShow: true,
+>     // 工具条是否位于输入框内部，默认位于外部
+>     inner: false,
+>     // 对齐方向，默认右对齐，可选左对齐 'left'
+>     align: 'right',
 >     // 启用指定工具模块，默认依次为字数统计、复制内容、重置内容、清空内容，按数组顺序显示
 >     tools: ['count', 'copy', 'reset', 'clear'],
 >     // 工具按钮提示类型，默认为 'title' 属性，可选 'laytips'，使用 layer 组件的吸附提示， 其他值不显示提示
 >     tipType: 'title',
 >     // 吸附提示背景颜色
 >     tipColor: '#01AAED',
->     // 对齐方向，默认右对齐，可选左对齐 'left'
->     align: 'right',
 >     // 工具条字体颜色
 >     color: '#666666',
 >     // 工具条背景颜色
