@@ -4,7 +4,7 @@
  * @author  iTanken
  * @since   2019-03-29
  * @version 2020-01-19：数字键盘纵向定位自适应
- * @version 2020-04-02：添加功能按钮悬浮提示开关参数；添加悬浮提示内部键盘按钮样式；修复 number 类型输入框小数输入问题；优化最大最小值信息提示，在键入数字时即可实时提示，无需等到键盘关闭
+ * @version 2020-04-02：添加功能按钮悬浮提示开关参数；添加悬浮提示内部键盘按钮样式；修复 number 类型输入框小数输入问题
  */
 layui.define(['jquery'], function(exports) {
   var $ = layui.$, baseClassName = 'layui-input-number', keyClassName = 'layui-keyboard-number',
@@ -224,7 +224,7 @@ layui.define(['jquery'], function(exports) {
       var $key, code;
       $keyBoard.on('keydown', function(e) {
         code = e.keyCode;
-        var inputNumber = parseInt($input.val()) || 0;
+        var inputNumber = parseInt($input.val(), 10) || 0;
         if (code === 107 || e.shiftKey && code === 187) {
           // 加号切换正数
           inputNumber < 0 && _this.setValueRange(_this, $input, Math.abs(inputNumber));
@@ -282,9 +282,8 @@ layui.define(['jquery'], function(exports) {
       var minVal = $input.attr('min') || Math.pow(-2, 63), 
         maxVal = $input.attr('max') || Math.pow(2, 63) - 1;
 
-      minVal = typeof minVal === 'string' && minVal.indexOf('0') > -1 ? parseFloat(minVal) : parseInt(minVal);
-      maxVal = typeof maxVal === 'string' && maxVal.indexOf('0') > -1 ? parseFloat(maxVal) : parseInt(maxVal);
-      // value = typeof value === 'string' && value.indexOf('0') > -1 ? parseFloat(value) : parseInt(value);
+      minVal = typeof minVal === 'string' && minVal.indexOf('0') > -1 ? parseFloat(minVal) : parseInt(minVal, 10);
+      maxVal = typeof maxVal === 'string' && maxVal.indexOf('0') > -1 ? parseFloat(maxVal) : parseInt(maxVal, 10);
 
       if (value < minVal) {
         value = minVal;
@@ -302,7 +301,7 @@ layui.define(['jquery'], function(exports) {
     setValue: function(_this, $input, $key) {
       var inputVal = $.trim($input.val()), keyVal = $.trim($key.text()), changeVal,
         prec = $.trim($input.data('prec')), isDecimal = inputVal.indexOf('.') > -1;
-      // 2020-04-02：修复获取小数精确度配置值问题
+        // 2020-04-02：修复获取小数精确度配置值问题
         prec = parseInt(prec === '' || isNaN(prec) ? _this.options.defaultPrec : prec, 10);
 
       if ($.inArray(keyVal, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']) > -1) {
@@ -321,7 +320,7 @@ layui.define(['jquery'], function(exports) {
         if (inputVal.indexOf('.') > -1 && inputVal.split('.')[1].length >= prec && prec > 0) {
           _this.tips($input, '精确度为保留小数点后 <kbd>' + prec + '</kbd> 位！');
           return;
-        };
+        }
 
         changeVal = inputVal = (keyVal !== '.' && inputVal === '0' ? '' : inputVal) + keyVal;
         $input.val(inputVal);
@@ -356,8 +355,7 @@ layui.define(['jquery'], function(exports) {
           return;
         }
       }
-      // 2020-04-02：优化最大最小值信息提示，在键入数字时即可实时提示，无需等到键盘关闭
-      _this.setValueRange(_this, $input, changeVal);
+      $input.val(changeVal);
     },
     /** 提示 */
     tips: function($input, msg) {
