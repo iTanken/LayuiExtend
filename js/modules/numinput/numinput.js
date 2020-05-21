@@ -286,11 +286,11 @@ layui.define(['jquery'], function(exports) {
       maxVal = typeof maxVal === 'string' && maxVal.indexOf('0') > -1 ? parseFloat(maxVal) : parseInt(maxVal, 10);
 
       if (value < minVal) {
-        value = minVal;
+        value = _this.toFixedPrec(_this, $input, minVal);
         _this.tips($input, '最小值为 <kbd>' + minVal + '</kbd>！');
       }
       if (value > maxVal) {
-        value = maxVal;
+        value = _this.toFixedPrec(_this, $input, maxVal);
         _this.tips($input, '最大值为 <kbd>' + maxVal + '</kbd>！');
       }
       value = value < minVal ? minVal : (value > maxVal ? maxVal : value);
