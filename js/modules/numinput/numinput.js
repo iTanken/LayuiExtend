@@ -282,8 +282,8 @@ layui.define(['jquery'], function(exports) {
       var minVal = $input.attr('min') || Math.pow(-2, 63), 
         maxVal = $input.attr('max') || Math.pow(2, 63) - 1;
 
-      minVal = typeof minVal === 'string' && minVal.indexOf('0') > -1 ? parseFloat(minVal) : parseInt(minVal, 10);
-      maxVal = typeof maxVal === 'string' && maxVal.indexOf('0') > -1 ? parseFloat(maxVal) : parseInt(maxVal, 10);
+      minVal = typeof minVal === 'string' && minVal.indexOf('.') > -1 ? parseFloat(minVal) : parseInt(minVal, 10);
+      maxVal = typeof maxVal === 'string' && maxVal.indexOf('.') > -1 ? parseFloat(maxVal) : parseInt(maxVal, 10);
 
       if (value < minVal) {
         value = _this.toFixedPrec(_this, $input, minVal);
